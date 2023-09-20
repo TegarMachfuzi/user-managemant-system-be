@@ -1,5 +1,6 @@
 package com.user.managemant.system.usermanagemantsystem.service;
 
+import com.user.managemant.system.usermanagemantsystem.dto.BaseResponseDto;
 import com.user.managemant.system.usermanagemantsystem.dto.UserReqDto;
 import com.user.managemant.system.usermanagemantsystem.dto.UserResponseDto;
 import com.user.managemant.system.usermanagemantsystem.exception.ResourceNotFoundException;
@@ -22,12 +23,13 @@ public class UserService {
     private UserRepository userRepository;
 
 
-    public void createUser(UserReqDto userRequest) {
+    public String createUser(UserReqDto userRequest) {
         User user = new User();
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
         userRepository.save(user);
         log.info("users {} is saved", user.getUser_id());
+        return "sucsess post";
     }
 
     public List<UserResponseDto> getAllUser() {
@@ -45,21 +47,21 @@ public class UserService {
         return userResponseDto;
     }
 
-    public ResponseEntity<User> updateUser(long id, User userUpdateDetails) {
-        User updateUserDetail = userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not exsit with id:" + id));
+    public User updateUser(long id, UserReqDto userReqDto) {
+        User updateUserDetail = userRepository.findById(id).get();
 
 
-        updateUserDetail.setUsername(userUpdateDetails.getUsername());
-        updateUserDetail.setPassword(userUpdateDetails.getPassword());
+        updateUserDetail.setUsername(userReqDto.getUsername());
+        updateUserDetail.setPassword(userReqDto.getPassword());
         userRepository.save(updateUserDetail);
 
         log.info("check {} update users", updateUserDetail);
-        return ResponseEntity.ok(updateUserDetail);
+        return updateUserDetail;
     }
 
-    public ResponseEntity<HttpStatus> deleteUser(long id) {
+    public String deleteUser(long id) {
         User deleteUser = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eploye not exist with id: " + id));
         userRepository.delete(deleteUser);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return "Success Delete";
     }
 }
