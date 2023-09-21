@@ -5,21 +5,21 @@ import com.user.managemant.system.usermanagemantsystem.dto.UserReqDto;
 import com.user.managemant.system.usermanagemantsystem.dto.UserResponseDto;
 import com.user.managemant.system.usermanagemantsystem.exception.ExceptionUser;
 import com.user.managemant.system.usermanagemantsystem.exception.RestFailedException;
-import com.user.managemant.system.usermanagemantsystem.model.User;
 import com.user.managemant.system.usermanagemantsystem.service.UserService;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
-@Slf4j
 public class UserController {
 
+
+    private static final Logger log = LogManager.getLogger(UserController.class);
     @Autowired
     private UserService userService;
 
@@ -31,7 +31,7 @@ public class UserController {
            result.setStatus(HttpStatus.OK.value());
            result.setInfo(HttpStatus.OK.name());
            result.setContent(obj);
-           log.info("***user post check: {}, Result{}", result);
+           log.info("info content new user api: {}", result);
         }catch (ExceptionUser e){
             result.setStatus(e.getStatusCode());
             result.setInfo(e.getMessage());
@@ -41,7 +41,7 @@ public class UserController {
         }catch (Exception e){
             result.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             result.setInfo("Internal System Error.");
-            log.error(String.valueOf(e));
+            log.error(e);
         }
         return result;
 
@@ -60,6 +60,7 @@ public class UserController {
            result.setStatus(HttpStatus.OK.value());
            result.setInfo(HttpStatus.OK.name());
            result.setContent(userUpdate);
+           log.info("info update user: {}", result);
        }catch (ExceptionUser e){
            result.setStatus(e.getStatusCode());
            result.setInfo(e.getMessage());
@@ -69,7 +70,7 @@ public class UserController {
        }catch (Exception e){
            result.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
            result.setInfo("UserId Not Found.");
-           log.error(String.valueOf(e));
+           log.error(e);
        }
        return result;
 
@@ -79,10 +80,11 @@ public class UserController {
    public BaseResponseDto<Object> deleteUser(@PathVariable long id){
        BaseResponseDto<Object> result = new BaseResponseDto<>();
        try {
-           Object userUpdate = userService.deleteUser(id);
+           Object deleteUser = userService.deleteUser(id);
            result.setStatus(HttpStatus.OK.value());
            result.setInfo(HttpStatus.OK.name());
-           result.setContent(userUpdate);
+           result.setContent(deleteUser);
+           log.info("deleteUser: {}", result);
        }catch (ExceptionUser e){
            result.setStatus(e.getStatusCode());
            result.setInfo(e.getMessage());
@@ -92,7 +94,7 @@ public class UserController {
        }catch (Exception e){
            result.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
            result.setInfo("UserId Not Found.");
-           log.error(String.valueOf(e));
+           log.error(e);
        }
        return result;
    }

@@ -1,12 +1,14 @@
 package com.user.managemant.system.usermanagemantsystem.service;
 
+import com.user.managemant.system.usermanagemantsystem.controller.UserController;
 import com.user.managemant.system.usermanagemantsystem.dto.BaseResponseDto;
 import com.user.managemant.system.usermanagemantsystem.dto.UserReqDto;
 import com.user.managemant.system.usermanagemantsystem.dto.UserResponseDto;
 import com.user.managemant.system.usermanagemantsystem.exception.ResourceNotFoundException;
 import com.user.managemant.system.usermanagemantsystem.model.User;
 import com.user.managemant.system.usermanagemantsystem.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +18,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 public class UserService {
 
+    private static final Logger log = LogManager.getLogger(UserController.class);
     @Autowired
     private UserRepository userRepository;
 

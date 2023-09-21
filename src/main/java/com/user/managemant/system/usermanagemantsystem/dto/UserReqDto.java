@@ -5,8 +5,17 @@ import java.io.Serializable;
 
 public class UserReqDto implements Serializable {
 
+    private Long user_id;
     private String username;
     private String password;
+
+    public Long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
+    }
 
     public String getUsername() {
         return username;
