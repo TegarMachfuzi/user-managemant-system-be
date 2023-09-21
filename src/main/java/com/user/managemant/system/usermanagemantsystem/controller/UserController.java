@@ -80,6 +80,30 @@ public class UserController {
 
    }
 
+    @GetMapping("{id}")
+    public BaseResponseDto<Object> getById(@PathVariable long id){
+        BaseResponseDto<Object> result = new BaseResponseDto<>();
+        try {
+            Object userUpdate = userService.getById(id);
+            result.setStatus(HttpStatus.OK.value());
+            result.setInfo(HttpStatus.OK.name());
+            result.setContent(userUpdate);
+            log.info("info update user: {}", objectMapper.writeValueAsString(result));
+        }catch (ExceptionUser e){
+            result.setStatus(e.getStatusCode());
+            result.setInfo(e.getMessage());
+        }catch (RestFailedException e) {
+            result.setStatus(e.getStatusCode());
+            result.setInfo(e.getMessage());
+        }catch (Exception e){
+            result.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            result.setInfo("UserId Not Found.");
+            log.error(e);
+        }
+        return result;
+
+    }
+
    @DeleteMapping("{id}")
    public BaseResponseDto<Object> deleteUser(@PathVariable long id){
        BaseResponseDto<Object> result = new BaseResponseDto<>();

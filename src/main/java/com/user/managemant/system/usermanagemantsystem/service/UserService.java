@@ -64,6 +64,14 @@ public class UserService {
         return updateUserDetail;
     }
 
+    public Object getById(long id) throws JsonProcessingException {
+        User updateUserDetail = userRepository.findById(id).get();
+        userRepository.save(updateUserDetail);
+
+        log.info("check {} getById users", objectMapper.writeValueAsString(updateUserDetail));
+        return updateUserDetail;
+    }
+
     public String deleteUser(long id) {
         User deleteUser = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eploye not exist with id: " + id));
         userRepository.delete(deleteUser);
