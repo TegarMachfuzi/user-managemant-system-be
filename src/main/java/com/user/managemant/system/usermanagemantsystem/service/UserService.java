@@ -54,7 +54,7 @@ public class UserService {
         return userResponseDto;
     }
 
-    public User updateUser(long id, UserReqDto userReqDto) throws JsonProcessingException {
+    public Object updateUser(long id, UserReqDto userReqDto) throws JsonProcessingException {
         User updateUserDetail = userRepository.findById(id).get();
         updateUserDetail.setUsername(userReqDto.getUsername());
         updateUserDetail.setPassword(userReqDto.getPassword());
