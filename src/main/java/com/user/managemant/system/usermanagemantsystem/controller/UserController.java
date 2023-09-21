@@ -1,5 +1,6 @@
 package com.user.managemant.system.usermanagemantsystem.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.user.managemant.system.usermanagemantsystem.dto.BaseResponseDto;
 import com.user.managemant.system.usermanagemantsystem.dto.UserReqDto;
 import com.user.managemant.system.usermanagemantsystem.dto.UserResponseDto;
@@ -23,6 +24,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @PostMapping
     public BaseResponseDto<Object> createUser(@RequestBody UserReqDto userRequest) {
         BaseResponseDto<Object> result = new BaseResponseDto<>();
@@ -31,7 +35,7 @@ public class UserController {
            result.setStatus(HttpStatus.OK.value());
            result.setInfo(HttpStatus.OK.name());
            result.setContent(obj);
-           log.info("info content new user api: {}", result);
+           log.info("info content new user api: {}", objectMapper.writeValueAsString(result));
         }catch (ExceptionUser e){
             result.setStatus(e.getStatusCode());
             result.setInfo(e.getMessage());
@@ -60,7 +64,7 @@ public class UserController {
            result.setStatus(HttpStatus.OK.value());
            result.setInfo(HttpStatus.OK.name());
            result.setContent(userUpdate);
-           log.info("info update user: {}", result);
+           log.info("info update user: {}", objectMapper.writeValueAsString(result));
        }catch (ExceptionUser e){
            result.setStatus(e.getStatusCode());
            result.setInfo(e.getMessage());
@@ -84,7 +88,7 @@ public class UserController {
            result.setStatus(HttpStatus.OK.value());
            result.setInfo(HttpStatus.OK.name());
            result.setContent(deleteUser);
-           log.info("deleteUser: {}", result);
+           log.info("deleteUser: {}", objectMapper.writeValueAsString(result));
        }catch (ExceptionUser e){
            result.setStatus(e.getStatusCode());
            result.setInfo(e.getMessage());

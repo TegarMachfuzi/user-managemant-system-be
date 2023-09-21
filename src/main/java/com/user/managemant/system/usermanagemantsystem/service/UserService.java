@@ -1,5 +1,8 @@
 package com.user.managemant.system.usermanagemantsystem.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.user.managemant.system.usermanagemantsystem.controller.UserController;
 import com.user.managemant.system.usermanagemantsystem.dto.UserReqDto;
 import com.user.managemant.system.usermanagemantsystem.dto.UserResponseDto;
@@ -20,14 +23,15 @@ public class UserService {
     private static final Logger log = LogManager.getLogger(UserController.class);
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-
-    public String createUser(UserReqDto userRequest) {
+    public String createUser(UserReqDto userRequest) throws JsonProcessingException {
         User user = new User();
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
         userRepository.save(user);
-        log.info("users {} is saved", user.getUserId());
+        log.info("users {} is saved", objectMapper.writeValueAsString(user));
         return "sucsess post";
     }
 
@@ -42,17 +46,21 @@ public class UserService {
         userResponseDto.setUserId(user.getUserId());
         userResponseDto.setUsername(user.getUsername());
         userResponseDto.setPassword(user.getPassword());
-        log.info("check {} mapping users", userResponseDto);
+        try {
+            log.info("{}", objectMapper.writeValueAsString(userResponseDto));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         return userResponseDto;
     }
 
-    public User updateUser(long id, UserReqDto userReqDto) {
+    public User updateUser(long id, UserReqDto userReqDto) throws JsonProcessingException {
         User updateUserDetail = userRepository.findById(id).get();
         updateUserDetail.setUsername(userReqDto.getUsername());
         updateUserDetail.setPassword(userReqDto.getPassword());
         userRepository.save(updateUserDetail);
 
-        log.info("check {} update users", updateUserDetail);
+        log.info("check {} update users", objectMapper.writeValueAsString(updateUserDetail));
         return updateUserDetail;
     }
 
