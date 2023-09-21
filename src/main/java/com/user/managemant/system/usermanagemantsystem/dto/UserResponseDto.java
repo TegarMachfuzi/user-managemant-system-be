@@ -1,12 +1,12 @@
 package com.user.managemant.system.usermanagemantsystem.dto;
 
 public class UserResponseDto {
-    private Long user_id;
+    private Long userId;
     private String username;
     private String password;
 
-    public UserResponseDto(Long user_id, String username, String password) {
-        this.user_id = user_id;
+    public UserResponseDto(Long userId, String username, String password) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
     }
@@ -15,12 +15,12 @@ public class UserResponseDto {
 
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {

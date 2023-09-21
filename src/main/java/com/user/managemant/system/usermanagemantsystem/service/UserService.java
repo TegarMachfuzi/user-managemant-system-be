@@ -1,7 +1,6 @@
 package com.user.managemant.system.usermanagemantsystem.service;
 
 import com.user.managemant.system.usermanagemantsystem.controller.UserController;
-import com.user.managemant.system.usermanagemantsystem.dto.BaseResponseDto;
 import com.user.managemant.system.usermanagemantsystem.dto.UserReqDto;
 import com.user.managemant.system.usermanagemantsystem.dto.UserResponseDto;
 import com.user.managemant.system.usermanagemantsystem.exception.ResourceNotFoundException;
@@ -10,8 +9,6 @@ import com.user.managemant.system.usermanagemantsystem.repository.UserRepository
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +27,7 @@ public class UserService {
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
         userRepository.save(user);
-        log.info("users {} is saved", user.getUser_id());
+        log.info("users {} is saved", user.getUserId());
         return "sucsess post";
     }
 
@@ -42,7 +39,7 @@ public class UserService {
 
     private UserResponseDto mapToUserResponse(User user) {
         UserResponseDto userResponseDto = new UserResponseDto();
-        userResponseDto.setUser_id(user.getUser_id());
+        userResponseDto.setUserId(user.getUserId());
         userResponseDto.setUsername(user.getUsername());
         userResponseDto.setPassword(user.getPassword());
         log.info("check {} mapping users", userResponseDto);
@@ -51,8 +48,6 @@ public class UserService {
 
     public User updateUser(long id, UserReqDto userReqDto) {
         User updateUserDetail = userRepository.findById(id).get();
-
-
         updateUserDetail.setUsername(userReqDto.getUsername());
         updateUserDetail.setPassword(userReqDto.getPassword());
         userRepository.save(updateUserDetail);

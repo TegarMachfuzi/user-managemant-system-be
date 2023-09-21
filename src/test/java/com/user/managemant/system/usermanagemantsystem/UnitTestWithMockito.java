@@ -1,6 +1,4 @@
 package com.user.managemant.system.usermanagemantsystem;
-
-import com.user.managemant.system.usermanagemantsystem.dto.UserReqDto;
 import com.user.managemant.system.usermanagemantsystem.model.User;
 import com.user.managemant.system.usermanagemantsystem.repository.UserRepository;
 import com.user.managemant.system.usermanagemantsystem.service.UserService;
