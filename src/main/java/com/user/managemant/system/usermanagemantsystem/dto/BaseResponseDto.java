@@ -28,6 +28,7 @@ public class BaseResponseDto <T> implements Serializable {
     }
 
 
+    //encapsulation
     public int getStatus() {
         return status;
     }
