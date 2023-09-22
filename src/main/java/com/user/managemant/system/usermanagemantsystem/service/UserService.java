@@ -9,6 +9,7 @@ import com.user.managemant.system.usermanagemantsystem.dto.UserResponseDto;
 import com.user.managemant.system.usermanagemantsystem.exception.ResourceNotFoundException;
 import com.user.managemant.system.usermanagemantsystem.model.User;
 import com.user.managemant.system.usermanagemantsystem.repository.UserRepository;
+import com.user.managemant.system.usermanagemantsystem.service.serviceImpl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserServiceImpl {
 
     private static final Logger log = LogManager.getLogger(UserController.class);
     @Autowired
@@ -26,6 +27,7 @@ public class UserService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Override
     public String createUser(UserReqDto userRequest) throws JsonProcessingException {
         User user = new User();
         user.setUsername(userRequest.getUsername());
@@ -35,11 +37,13 @@ public class UserService {
         return "sucsess post";
     }
 
+    @Override
     public List<UserResponseDto> getAllUser() {
         List<User> users = userRepository.findAll();
         
         return users.stream().map(this::mapToUserResponse).collect(Collectors.toList());
     }
+
 
     private UserResponseDto mapToUserResponse(User user) {
         UserResponseDto userResponseDto = new UserResponseDto();
@@ -54,6 +58,7 @@ public class UserService {
         return userResponseDto;
     }
 
+    @Override
     public Object updateUser(long id, UserReqDto userReqDto) throws JsonProcessingException {
         User updateUserDetail = userRepository.findById(id).get();
         updateUserDetail.setUsername(userReqDto.getUsername());
@@ -64,6 +69,7 @@ public class UserService {
         return updateUserDetail;
     }
 
+    @Override
     public Object getById(long id) throws JsonProcessingException {
         User updateUserDetail = userRepository.findById(id).get();
         userRepository.save(updateUserDetail);
@@ -72,6 +78,7 @@ public class UserService {
         return updateUserDetail;
     }
 
+    @Override
     public String deleteUser(long id) {
         User deleteUser = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Eploye not exist with id: " + id));
         userRepository.delete(deleteUser);
